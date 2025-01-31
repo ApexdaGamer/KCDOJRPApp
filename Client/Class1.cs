@@ -77,7 +77,7 @@ namespace KCDOJRPApp.Client
 
                 var model = (args.Length > 0 ? args[0].ToString() : "adder"); // short and sweet check for args.
 
-                var hash = (uint)GetHashKey(model); // check if it exists...... or something
+                var hash = GetHashKey(model); // check if it exists...... or something
                 if (!IsModelInCdimage(hash) || !IsModelAVehicle(hash))
                 {
                     SendError($"Vehicle model {model} doesn't exist!"); // yea stinky. you should know better.
@@ -105,10 +105,10 @@ namespace KCDOJRPApp.Client
             {
                 Debug.WriteLine($"WATCH OUT!!! {source} IS SCREWING WITH /setweapon !!!!");
 
-                var model = (args.Length > 0 ? args[0].ToString() : "W_PI_PISTOL"); // short and sweet check for args. gotta know if we have the right..,,,, HE HAS A GUN!!!!
+                var model = (args.Length > 0 ? args[0].ToString() : "WEAPON_PISTOL"); // short and sweet check for args. gotta know if we have the right..,,,, HE HAS A GUN!!!!
 
-                var model1 = new Model(GetHashKey(model));
-                if (!model1.IsValid || !model1.IsInCdImage) // does it exist and is it valid
+                var hash = GetHashKey(model);
+                if (!IsWeaponValid(hash)) // does it exist and is it valid
                 {
                     SendError($"Weapon model {model} doesn't exist!"); // stinky person
                     return;
@@ -118,15 +118,15 @@ namespace KCDOJRPApp.Client
 
                 var chr = Game.PlayerPed;
 
-                if (chr.Weapons.HasWeapon((WeaponHash)model1.Hash))
+                if (chr.Weapons.HasWeapon((WeaponHash)hash))
                 {
-                    chr.Weapons.Remove(chr.Weapons[(WeaponHash)model1.Hash]);
+                    chr.Weapons.Remove(chr.Weapons[(WeaponHash)hash]);
                     SendSuccess($"Successfully removed a {model}.");
                 }
                 else
                 {
-                    var wep = chr.Weapons.Give((WeaponHash)model1.Hash, ammo, true, true); // WHY IS IT ALL INVALID RAHHHH
-                    Debug.WriteLine($"{chr.Weapons.Current.DisplayName}, {wep.DisplayName}, {chr.Weapons.Select(wep)}");
+                    var wep = chr.Weapons.Give((WeaponHash)hash, ammo, true, true); // yippie give em all guns
+                    Debug.WriteLine($"cur: {chr.Weapons.Current.DisplayName}, spawned: {wep.DisplayName}, can select?: {chr.Weapons.Select(wep)}"); // make sure its working right
                     SendSuccess($"Successfully summoned a {model}.");
                 }
             }), false); // i still don't know what restricted does

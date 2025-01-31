@@ -1,8 +1,6 @@
 fx_version 'cerulean'
 game 'gta5'
 
-file 'Server/bin/Release/net452/Server.net.dll'
-
 client_script 'Client/bin/Release/net452/Client.net.dll'
 server_script 'Server/bin/Release/net452/Server.net.dll'
 
