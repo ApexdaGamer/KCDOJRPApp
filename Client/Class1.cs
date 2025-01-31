@@ -36,7 +36,7 @@ namespace KCDOJRPApp.Client
                             float sx = 0f, sy = 0f;
                             var onScreen = World3dToScreen2d(pos.X, pos.Y, pos.Z, ref sx, ref sy); // yea i hate conversion its annoying
 
-                            var spos = new Vector2(sx * Screen.Width, sy * Screen.Height);
+                            var spos = new Vector2(sx * Screen.Width, sy * Screen.Height); // make sure its actually in screen space and not a number from 0-1
 
                             var text = new Text($"[{GetPlayerServerId(id)}] {GetPlayerName(id)}", spos, 0.215f); // heres some text
                             text.Enabled = onScreen;
@@ -53,7 +53,7 @@ namespace KCDOJRPApp.Client
             Events.TriggerEvent("chat:addMessage", new
             {
                 color = new[] { 255, 0, 0 },
-                args = new[] { "[ERROR]", msg }
+                args = new[] { "[ERROR]", msg } // damn okay
             });
         }
 
@@ -62,7 +62,7 @@ namespace KCDOJRPApp.Client
             Events.TriggerEvent("chat:addMessage", new
             {
                 color = new[] { 0, 255, 0 },
-                args = new[] { "[SUCCESS]", msg }
+                args = new[] { "[SUCCESS]", msg } // yippie
             });
         }
 
@@ -84,12 +84,12 @@ namespace KCDOJRPApp.Client
                     return;
                 }
 
-                var curVehicle = Game.PlayerPed.CurrentVehicle;
+                var curVehicle = Game.PlayerPed.CurrentVehicle; // i dont know why i have this in the spot i do
 
                 if (Game.PlayerPed.IsInAir || (curVehicle != null && curVehicle.IsInAir)) { SendError("You cannot summon a vehicle while in air!"); return; }
                 else if (Game.PlayerPed.IsInWater || (curVehicle != null && curVehicle.IsInWater)) { SendError("You cannot summon a vehicle while in water!"); return; } // silly checks for silly people
 
-                if (curVehicle != null) curVehicle.Delete();
+                if (curVehicle != null) curVehicle.Delete(); // yea man. can't be having that
 
                 var vehicle = await World.CreateVehicle(model, Game.PlayerPed.Position, Game.PlayerPed.Heading); // yum, vehicles
 
@@ -116,20 +116,20 @@ namespace KCDOJRPApp.Client
 
                 var ammo = args.Length > 1 ? int.Parse(args[1].ToString()) : 25; // ammo check !
 
-                var chr = Game.PlayerPed;
+                var chr = Game.PlayerPed; // i dont want to type this out a bajillion times
 
-                if (chr.Weapons.HasWeapon((WeaponHash)hash))
+                if (chr.Weapons.HasWeapon((WeaponHash)hash)) // does it exist?... IT EXISTS!
                 {
-                    chr.Weapons.Remove(chr.Weapons[(WeaponHash)hash]);
+                    chr.Weapons.Remove(chr.Weapons[(WeaponHash)hash]); // remove the gun if it exists. don't need two of them
                     SendSuccess($"Successfully removed a {model}.");
                 }
-                else
+                else // oh nevermind, guess it doesn't exist
                 {
                     var wep = chr.Weapons.Give((WeaponHash)hash, ammo, true, true); // yippie give em all guns
                     Debug.WriteLine($"cur: {chr.Weapons.Current.DisplayName}, spawned: {wep.DisplayName}, can select?: {chr.Weapons.Select(wep)}"); // make sure its working right
-                    SendSuccess($"Successfully summoned a {model}.");
+                    SendSuccess($"Successfully summoned a {model}."); // yippie
                 }
-            }), false); // i still don't know what restricted does
+            }), false); // nevermind i know what it does now
         }
     }
 }
