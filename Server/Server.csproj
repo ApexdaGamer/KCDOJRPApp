@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="CitizenFX.Core">
+      <HintPath>..\..\..\FXServer\server\citizen\clr2\lib\mono\4.5\v2\CitizenFX.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CitizenFX.Server">
+      <HintPath>..\..\..\FXServer\server\citizen\clr2\lib\mono\4.5\v2\CitizenFX.Server.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
